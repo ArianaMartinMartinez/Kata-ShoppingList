@@ -9,3 +9,4 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('apiShowP
 Route::post('/products', [ProductController::class, 'sotre'])->name('apiStoreProduct');
 Route::put('/products/{id}', [ProductController::class, 'update'])->name('apiUpdateProduct');
 Route::delete('/products/{id}', [ProductController::class, 'destroyOneProduct'])->name('apiDestroyProduct');
+Route::delete('/products/list', [ProductController::class, 'destroyAllProducts'])->name('apiDestroyList');
