@@ -57,7 +57,36 @@ class ProductController extends Controller
 
     public function update(Request $request, string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required | string',
+            'quantity' => 'required | integer | min:1',
+        ]);
+
+        if($validator->fails()) {
+            return response()->json([
+                'message' => 'Introduced data is not correct',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        $validated = $validator->validate();
+
+        $productAlreadyExists = Product::where('name', $validated['name'])->first();
+        if($productAlreadyExists && $productAlreadyExists->id !== $product->id) {
+            return response()->json([
+                'message' => 'Introduced product already exists in the list',
+            ], 400);
+        }
+
+        $product->update([
+            'name' => $validated['name'],
+            'quantity' => $validated['quantity'],
+        ]);
+        $product->save();
+
+        return response()->json($product, 200);
     }
 
     public function destroyOneProduct(string $id)
