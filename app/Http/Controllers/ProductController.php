@@ -91,7 +91,13 @@ class ProductController extends Controller
 
     public function destroyOneProduct(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        $product->delete();
+
+        return response()->json([
+            'message' => 'Product deleted',
+            'product' => $product,
+        ], 200);
     }
 
     public function destroyAllProducts() {
