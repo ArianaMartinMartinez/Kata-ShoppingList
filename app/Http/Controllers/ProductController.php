@@ -101,6 +101,10 @@ class ProductController extends Controller
     }
 
     public function destroyAllProducts() {
-        //
+        Product::truncate();
+
+        return response()->json([
+            'message' => 'All products from the list deleted',
+        ], 200);
     }
 }
